@@ -1,0 +1,47 @@
+rule "move 035 if not correct format"
+when
+(exists "035.a.(OCoLC)o*")
+then
+copyField "035" to "935.a" if (exists "035.a.(OCoLC)o*")
+addSubField "935.9.delete" if (not exists "935.9.*")
+removeField "035" if (exists "035.a.(OCoLC)o*")
+end
+
+rule "move 035 if not correct format2"
+when
+(exists "035.a.o*")
+then
+copyField "035" to "935.a" if (exists "035.a.o*")
+addSubField "935.9.delete" if (not exists "935.9.*")
+removeField "035" if (exists "035.a.o*")
+end
+
+rule "move 035 if not correct format2b"
+when
+(exists "035.a.O*")
+then
+copyField "035" to "935.a" if (exists "035.a.O*")
+addSubField "935.9.delete" if (not exists "935.9.*")
+removeField "035" if (exists "035.a.O*")
+end
+
+
+rule "move 035 if not correct format3"
+when
+(exists "035.a.0*")
+then
+copyField "035" to "935.a" if (exists "035.a.0*")
+addSubField "935.9.delete" if (not exists "935.9.*")
+removeField "035" if (exists "035.a.0*")
+end
+
+rule "move 035 if not correct format4"
+when
+(exists "035.a.(OCoLC)0*")
+then
+copyField "035" to "935.a" if (exists "035.a.(OCoLC)0*")
+addSubField "935.9.delete" if (not exists "935.9.*")
+removeField "035" if (exists "035.a.(OCoLC)0*")
+end
+
+

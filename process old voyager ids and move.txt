@@ -1,0 +1,98 @@
+rule "prefix existing oclc z to keep track for later"
+priority 20
+when
+(TRUE)
+then
+prefix "035.z" with "Z"
+end
+
+rule "move voyager id in same field as ocn step 1"
+#moves a 035 to 935 field if it has a z with Voyager id
+priority 10
+when
+(TRUE)
+then
+copyField "035" to "935" if (exists "035.z.*Voyager*")
+removeField "035" if (exists "035.z.*Voyager*")
+end
+
+rule "move voyager id in same field as ocn step 2"
+#combines other subfield z into one subfield and splits it
+priority 8
+when 
+(TRUE)
+then
+changeSubField "935.a" to "x"
+changeSubField "935.z" to "x"
+suffix "935.x" with ";"
+suffixSubField "935.x" with "935.x"
+removeSubField "935.z"
+splitSubField "935.x.;" to "936.a" 
+removeField "935"
+end
+
+rule "move voyager id in same field as ocn step 3"
+#for when voyager id already exists in its own 035 field
+priority 7
+when
+(TRUE)
+then
+changeSubField "936.a" to "z" if (exists "936.a.*Voyager*")
+copyField "936.z" to "935.a"
+removeField "936" if (exists "936.z.*")
+replaceContents "935.a.Z" with ""
+addSubField "935.9.local" if (not exists "935.9.local")
+end
+
+rule "move non Voyager ID 936s back to 035"
+priority 6
+when
+(TRUE)
+then
+copyField "936" to "035"
+removeField "936"
+end
+
+rule "use prefixed z to make fields subfield z again"
+priority 5
+when
+(TRUE)
+then
+changeSubField "035.a" to "z" if (exists "035.a.Z*")
+end
+
+rule "remove the prefixed Z"
+priority 4
+when
+(TRUE)
+then
+replaceContents "035.z.Z" with ""
+end
+
+rule "move voyager id if isolated"
+#moves a 035 to 935 field if it has a z with Voyager id
+priority 3
+when
+(TRUE)
+then
+copyField "035" to "935" if (exists "035.a.*Voyager*")
+removeField "035" if (exists "035.a.*Voyager*")
+addSubField "935.9.local" if (not exists "935.9.local")
+end
+
+rule "correct duplicate 035"
+priority 2
+when
+(TRUE)
+then
+correctDuplicateFields "035"
+end
+
+rule "combine duplicate 035"
+priority 1
+when
+(TRUE)
+then
+combineFields "035" excluding ""
+end
+

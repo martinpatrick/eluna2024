@@ -1,0 +1,39 @@
+rule "008 for journals"
+when
+exists "TMP.a.JRN"
+then
+replaceControlContents "008.{20,1}" with "b" 
+replaceControlContents "008.{21,1}" with "a"
+end
+
+rule "008 lending"
+when
+exists "TMP.a.MONLEN"
+then
+replaceControlContents "008.{20,1}" with "a" 
+replaceControlContents "008.{21,1}" with "a"
+end
+
+rule "008 non lending"
+when
+exists "TMP.a.MONNO"
+then
+replaceControlContents "008.{20,1}" with "b" 
+replaceControlContents "008.{21,1}" with "b"
+end
+
+rule "008 dvd"
+when
+exists "TMP.a.DVD"
+then
+replaceControlContents "008.{20,1}" with "l" 
+replaceControlContents "008.{21,1}" with "b"
+end
+
+rule "remove tmp and localize 999 if needed"
+when
+TRUE
+then
+removeField "TMP"
+addSubfield "999.9.local" if (not exists "999.9.local")
+end

@@ -1,0 +1,63 @@
+rule "journal rules hardcoded"
+priority 26
+when
+exists "999.a.JRN*"
+then
+addField "TMP.a.JRN"
+end
+
+rule "journal tmp"
+priority 25
+when
+exists "866" AND exists "852.b.GTLSC" AND exists "852.c.GENERAL"
+then
+addField "TMP.a.JRN"
+end
+
+rule "journal tmp 2"
+priority 24
+when
+exists "863" AND exists "852.b.GTLSC" AND exists "852.c.GENERAL"
+then
+addField "TMP.a.JRN"
+end
+
+rule "journal tmp 3"
+priority 23
+when
+exists "853" AND exists "852.b.GTLSC" AND exists "852.c.GENERAL"
+then
+addField "TMP.a.JRN"
+end
+
+rule "journal lile"
+priority 22
+when
+exists "852.b.GTLSC" AND exists "852.c.REFERENCE|ARCHIVES"
+then
+addField "TMP.a.JRN"
+end
+
+rule "lendable book tmp"
+priority 20
+when
+(exists "852.b.GTLSC" AND exists "852.c.GENERAL|SCIFICIRC")
+then
+addField "TMP.a.MONLEN" if (not exists "TMP")
+end
+
+rule "lendable dvd tmp"
+priority 17
+when
+(exists "852.b.GTLSC" AND exists "852.c.LSCDVD")
+then
+addField "TMP.a.DVD" if (not exists "TMP")
+end
+
+rule "non lendable tmp"
+priority 15
+when
+not exists "TMP.a.MONLEN" AND not exists "TMP.a.JRN"
+then
+addField "TMP.a.MONNO" if (not exists "TMP")
+end

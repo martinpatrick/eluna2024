@@ -1,0 +1,20 @@
+rule "remove 004" 
+when
+TRUE
+then
+removeField "004"
+end
+
+rule "remove 014" 
+when
+TRUE
+then
+removeField "014"
+end
+
+rule "remove 035" 
+when
+TRUE
+then
+removeField "035"
+end
